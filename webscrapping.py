@@ -34,7 +34,7 @@ for data in all_data:
     release_date.append(int(data.find('span', class_="lister-item-year text-muted unbold").get_text(separator=' ').strip('()I ')))
     rating.append(data.find('span', class_ = 'ipl-rating-star__rating').get_text(separator=' '))
     duration.append(int(data.find('span', class_ = 'runtime').get_text(separator=' ')[:-4]))
-    genre.append(data.find('span', class_ = 'genre').get_text(separator=' ')[1:-12])
+    genre.append(data.find('span', class_ = 'genre').get_text(separator=' ')[1:-12].split(', '))
 
 
     
@@ -47,18 +47,22 @@ for person in people[1::3]:
     splittedPerson1a = splittedPerson1[0][16:]
     splittedPerson1b = splittedPerson1[1][15:]
     final_actors = splittedPerson1b.replace(' \n', '')
-    director.append(splittedPerson1a[:-3])
-    actors.append(final_actors)
+    final_director = splittedPerson1a.replace(' \n', '')
+    director.append(final_director[:-1].split(' , '))
+    actors.append(final_actors.split(' , '))
     
-values = soup.find_all('span', name_ = "nv")
+values = soup.find_all('p', class_ = 'text-muted text-small')
 
-for value in values:
-    print(value)
+for value in values[2::3]:
+    raw_text = value.get_text(separator=' ')
+    values_splitted = raw_text.split('|')
+    gross_v = values_splitted[1].strip('Gross: ')
+    gross_f = gross_v.replace('$', '').replace('M', '')
+    gross.append(float(gross_f.replace('\n ', '').replace(' \n', '')))
+    
 
-#Description
-#desc_all = soup.find_all('div', class_= "lister-item-content")
+print(gross)
 
-#print(desc_all)
 
 
 ######## Create Pandas DataFrame ########
@@ -66,4 +70,4 @@ for value in values:
 dataList = zip(movie_name, genre, desc, release_date, director, actors, rating, duration, gross)
 movieData = pd.DataFrame(dataList, columns = ['Title', 'Genre', 'Summary', 'Release Date', 'Directors', 'Actors', 'Ratings', 'Duration', 'Gross Income'])
 
-#print(movieData)
+print(movieData)
