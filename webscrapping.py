@@ -9,9 +9,8 @@ soup = BeautifulSoup(page.content, 'html.parser')
 
 all_data = soup.find_all('div', class_ = "lister-item-content")
 
-#print(all_data)
 
-# lists for storage
+# Lists for data Storage
 movie_name = []
 desc = []
 release_date = []
@@ -26,7 +25,6 @@ gross = []
 
 ######## Fill lists with extracted data ########
 
-#name_all = all_data.find_all('h3', class_ = 'lister-item-header')
 
 for data in all_data:
     movie_name.append(data.find('a').get_text(separator=' '))
@@ -37,7 +35,6 @@ for data in all_data:
     genre.append(data.find('span', class_ = 'genre').get_text(separator=' ')[1:-12].split(', '))
 
 
-    
 
 people = soup.find_all('p', class_ ='text-muted text-small')
 
@@ -51,6 +48,8 @@ for person in people[1::3]:
     director.append(final_director[:-1].split(' , '))
     actors.append(final_actors.split(' , '))
     
+
+
 values = soup.find_all('p', class_ = 'text-muted text-small')
 
 for value in values[2::3]:
@@ -59,10 +58,6 @@ for value in values[2::3]:
     gross_v = values_splitted[1].strip('Gross: ')
     gross_f = gross_v.replace('$', '').replace('M', '')
     gross.append(float(gross_f.replace('\n ', '').replace(' \n', '')))
-    
-
-print(gross)
-
 
 
 ######## Create Pandas DataFrame ########
