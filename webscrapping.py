@@ -65,4 +65,5 @@ for value in values[2::3]:
 dataList = zip(movie_name, genre, desc, release_date, director, actors, rating, duration, gross)
 movieData = pd.DataFrame(dataList, columns = ['Title', 'Genre', 'Summary', 'Release Date', 'Directors', 'Actors', 'Ratings', 'Duration', 'Gross Income'])
 
+
 print(movieData)
